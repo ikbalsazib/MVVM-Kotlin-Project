@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import com.softlabit.mvvmproject.coroutine.Coroutines
 import com.softlabit.mvvmproject.data.repositories.UserRepository
+import com.softlabit.mvvmproject.util.ApiException
 
 class AuthViewModel: ViewModel() {
     var email: String? = null
@@ -21,13 +22,18 @@ class AuthViewModel: ViewModel() {
 
         // With Coroutine..
         Coroutines.main {
-            val response = UserRepository().userLogin(email!!, password!!)
+            try {
+                val authResponse = UserRepository().userLogin(email!!, password!!)
 
-            if (response.isSuccessful) {
-                authListener.onSuccess(response.body()?.user!!)
-            } else {
-                authListener.onFailure("Error code: ${response.code()}")
+                authResponse.user?.let {
+                    authListener.onSuccess(it)
+                    return@main
+                }
+                authListener.onFailure(authResponse.message!!)
+            } catch (e: ApiException) {
+                authListener.onFailure(e.message!!)
             }
+
         }
     }
 }

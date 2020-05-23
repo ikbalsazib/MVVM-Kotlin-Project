@@ -13,6 +13,7 @@ import com.softlabit.mvvmproject.ui.auth.AuthListener
 import com.softlabit.mvvmproject.ui.auth.AuthViewModel
 import com.softlabit.mvvmproject.util.hide
 import com.softlabit.mvvmproject.util.show
+import com.softlabit.mvvmproject.util.snackbar
 import com.softlabit.mvvmproject.util.toast
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -39,12 +40,14 @@ class MainActivity : AppCompatActivity(), AuthListener {
 
     override fun onSuccess(user: User) {
         progress_bar.hide()
-        toast("${user.name} is logged in.")
+        root_layout.snackbar("${user.name} is logged in.")
+        // toast("${user.name} is logged in.")
     }
 
     override fun onFailure(message: String) {
         progress_bar.hide()
-        toast(message)
+        root_layout.snackbar(message)
+        // toast(message)
     }
 
 }
