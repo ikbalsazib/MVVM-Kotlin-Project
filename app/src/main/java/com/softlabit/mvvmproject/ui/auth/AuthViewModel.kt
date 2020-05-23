@@ -6,12 +6,17 @@ import com.softlabit.mvvmproject.coroutine.Coroutines
 import com.softlabit.mvvmproject.data.repositories.UserRepository
 import com.softlabit.mvvmproject.util.ApiException
 
-class AuthViewModel: ViewModel() {
+class AuthViewModel(
+    private var repository: UserRepository
+): ViewModel() {
     var email: String? = null
     var password: String? = null
 
     // Interface...
     lateinit var authListener: AuthListener
+
+    // Get Logged in User..
+    fun getLoggedInUser() = repository.getUser()
 
     fun onLoginButtonClick(view: View) {
         authListener.onStarted()
@@ -23,10 +28,12 @@ class AuthViewModel: ViewModel() {
         // With Coroutine..
         Coroutines.main {
             try {
-                val authResponse = UserRepository().userLogin(email!!, password!!)
+                val authResponse = repository.userLogin(email!!, password!!)
 
                 authResponse.user?.let {
                     authListener.onSuccess(it)
+                    // Save User Data to Local Database..
+                    repository.saveUser(it)
                     return@main
                 }
                 authListener.onFailure(authResponse.message!!)
