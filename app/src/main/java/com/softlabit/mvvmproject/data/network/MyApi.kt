@@ -2,11 +2,13 @@ package com.softlabit.mvvmproject.data.network
 
 import com.softlabit.mvvmproject.data.model.User
 import com.softlabit.mvvmproject.data.network.responses.AuthResponse
+import com.softlabit.mvvmproject.data.network.responses.MovieResponse
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface MyApi {
@@ -23,6 +25,10 @@ interface MyApi {
     suspend fun userSignup(
         @Body user: User
     ): Response<AuthResponse>
+
+
+    @GET("movies")
+    suspend fun getMovies(): Response<MovieResponse>
 
 
     // Call the Instance of MyAPI like MyAPI()...

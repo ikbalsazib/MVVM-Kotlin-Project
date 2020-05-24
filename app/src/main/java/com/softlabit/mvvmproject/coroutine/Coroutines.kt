@@ -10,4 +10,9 @@ object Coroutines {
         CoroutineScope(Dispatchers.Main).launch {
             work()
         }
+
+    fun io(work: suspend (() -> Unit)): Job =
+        CoroutineScope(Dispatchers.IO).launch {
+            work()
+        }
 }
