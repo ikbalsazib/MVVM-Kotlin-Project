@@ -16,6 +16,15 @@ class UserRepository(
         return apiRequest { api.userLogin(User(email, password)) }
     }
 
+    suspend fun userSignup(
+        email: String,
+        password: String,
+        name: String,
+        phone: String
+    ): AuthResponse {
+        return apiRequest { api.userSignup(User(email, password, name, phone)) }
+    }
+
     // Save User Data to Local Storage..
     suspend fun saveUser(user: com.softlabit.mvvmproject.data.db.entities.User) =
         db.getUserDao().upsert(user)

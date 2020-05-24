@@ -17,6 +17,14 @@ interface MyApi {
         @Body user: User
     ): Response<AuthResponse>
 
+
+    @POST("registration")
+    // Responsible with Coroutine..
+    suspend fun userSignup(
+        @Body user: User
+    ): Response<AuthResponse>
+
+
     // Call the Instance of MyAPI like MyAPI()...
     companion object{
         operator fun invoke(
